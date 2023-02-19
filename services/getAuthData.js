@@ -7,10 +7,10 @@ module.exports = getAuthData = req => {
     authenticated: false,
     ipClient: ipClient,
   };
-  if (
-    ipClient === process.env.ADMIN_IP ||
-    (process.env.MODE === 'dev' && req.ip === process.env.ADMIN_IP)
-  ) {
+  const isIpAdmin = ipClient === process.env.ADMIN_IP;
+  const forceAdminMode = process.env.FORCE_ADMIN_MODE === 'force';
+
+  if (isIpAdmin || forceAdminMode) {
     authData.rol = 'admin';
     authData.isIpAdmin = true;
   }

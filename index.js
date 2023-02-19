@@ -15,6 +15,7 @@ const corsOptions = {
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
 const sessionOptions = {
   secret: process.env.SECRET_SESSION,
   resave: false,
@@ -24,15 +25,15 @@ const sessionOptions = {
     dbName: process.env.DB_NAME,
   }),
   cookie: {
-    secure: false,
-    sameSite: 'none',
+    secure: process.env.MODE === 'prod',
+    sameSite: 'lax',
   },
 };
 app.use(cors(corsOptions));
 
 if (process.env.MODE === 'prod') {
   app.set('trust proxy', 1);
-  sessionOptions.cookie.secure = true;
+  sessionOptions.cookie.sameSite = 'none';
 }
 app.use(session(sessionOptions));
 app.use(express.json());
