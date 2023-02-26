@@ -37,6 +37,7 @@ if (process.env.MODE === 'prod') {
 }
 app.use(session(sessionOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(passport.initialize());
@@ -69,6 +70,7 @@ app.use((req, res, next) => {
 // Routers
 app.use('/api/auth', require('./routers/auth'));
 app.use('/api/admin', require('./routers/admin'));
+app.use('/api/stream', require('./routers/stream'));
 app.get('/', (req, res) => {
   res.send({ msg: 'Hola mundo' });
 });

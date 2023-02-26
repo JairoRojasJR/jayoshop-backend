@@ -4,28 +4,32 @@ const { Schema } = mongoose;
 const productsSchema = new Schema({
   name: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
   },
   price: {
     type: String,
-    required: true
+    required: true,
   },
   cuantity: {
     type: Number,
-    required: true
+    required: true,
   },
   section: {
     type: String,
-    required: true
+    required: true,
   },
   barcode: {
     type: Number,
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 module.exports = mongoose.model('Product', productsSchema);
