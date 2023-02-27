@@ -144,7 +144,7 @@ const updateProduct = async (req, res) => {
       limits: {
         files: 1,
         fileSize: 10000000,
-        fields: 7,
+        fields: 8,
       },
     });
 
