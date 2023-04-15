@@ -83,11 +83,11 @@ passport.deserializeUser((user, done) => {
 })
 
 // Validate frontend origin else redirect it to
-app.use((req, res, next) => {
-  const isFrontendOrigin = req.headers.origin === frontendUrl
-  if (isProdMode && !isFrontendOrigin) return res.redirect(frontendUrl)
-  next()
-})
+// app.use((req, res, next) => {
+//   const isFrontendOrigin = req.headers.origin === frontendUrl
+//   if (isProdMode && !isFrontendOrigin) return res.redirect(frontendUrl)
+//   next()
+// })
 
 // Routers
 app.use('/api/stream', require('./routers/public/stream'))
