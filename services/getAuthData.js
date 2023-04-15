@@ -1,18 +1,15 @@
-module.exports = getAuthData = req => {
-  if (req.user) return req.user;
-  let ipClient = req.ip.split(':')[0];
-  let authData = {
-    rol: 'client',
-    isIpAdmin: false,
-    authenticated: false,
-    ipClient: ipClient,
-  };
-  const isIpAdmin = ipClient === process.env.ADMIN_IP;
-  const forceAdminMode = process.env.FORCE_ADMIN_MODE === 'force';
+module.exports = reqIp => {
+  const reqSplit = reqIp.split(':')
+  const ip = reqSplit[0] || reqSplit[reqSplit.length - 1]
+  const isIpAdmin = ip === process.env.ADMIN_IP || global.adminModeForced
 
-  if (isIpAdmin || forceAdminMode) {
-    authData.rol = 'admin';
-    authData.isIpAdmin = true;
+  const authData = {
+    rol: isIpAdmin ? 'admin' : 'client',
+    isIpAdmin,
+    ip
   }
-  return authData;
-};
+
+  const isProdMode = globalThis.isProdMode
+  if (!isProdMode) authData.adminModeForced = globalThis.adminModeForced
+  return authData
+}

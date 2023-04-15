@@ -1,30 +1,51 @@
 {
-  "name": "laveci",
-  "version": "1.0.0",
+  "name": "laveci-backend",
+  "version": "2.0.0",
   "main": "index.js",
-  "description": "Portal web laveci tienda del barrio",
+  "description": "API laveci - tienda del barrio",
   "author": "Jairo Rojas",
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@azure/storage-blob": "^12.12.0",
-    "bcrypt": "^5.1.0",
-    "connect-mongo": "^4.6.0",
-    "cookie-parser": "^1.4.6",
-    "cors": "^2.8.5",
-    "csrf": "^3.1.0",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
-    "mongoose": "^6.8.4",
-    "multer": "^1.4.5-lts.1",
+    "@azure/storage-blob": "12.13.0",
+    "bcrypt": "5.1.0",
+    "connect-mongo": "4.6.0",
+    "cookie-parser": "1.4.6",
+    "cors": "2.8.5",
+    "csrf": "3.1.0",
+    "dotenv": "16.0.3",
+    "eslint": "8.0.1",
+    "express": "4.18.2",
+    "express-session": "1.17.3",
+    "mongoose": "6.8.4",
+    "multer": "1.4.5-lts.1",
     "nanoid": "3.3.1",
-    "passport": "^0.6.0"
+    "passport": "0.6.0"
   },
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
     "test": "",
+    "lint": "eslint . --fix",
+    "prettier": "prettier . --write",
     "azure-deploy": "az webapp deploy --resource-group Portafolio-Web --name laveci-backend --src-path backend.zip --type zip --async true"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "8.8.0",
+    "eslint-config-standard": "17.0.0",
+    "eslint-plugin-import": "2.25.2",
+    "eslint-plugin-n": "15.0.0",
+    "eslint-plugin-promise": "6.0.0",
+    "husky": "8.0.3",
+    "lint-staged": "13.2.0",
+    "prettier": "2.8.7",
+    "standard": "17.0.0"
+  },
+  "eslintConfig": {
+    "extends": ".eslintrc.js"
+  },
+  "lint-staged": {
+    "*.js": "eslint --fix",
+    "**/*.{js,css,html}": "prettier --write"
   }
 }
