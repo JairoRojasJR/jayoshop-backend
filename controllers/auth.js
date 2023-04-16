@@ -49,9 +49,14 @@ const logout = (req, res) => {
     })
   }
 
-  req.session.destroy()
-  authData.isAuthenticated = false
-  res.json({ message: 'Sesión cerrada', authData })
+  req.logout(function (error) {
+    if (error) return res.send({ error: error.message })
+    req.session.destroy(function (error) {
+      if (error) return res.send({ error: error.message })
+      authData.isAuthenticated = false
+      res.json({ message: 'Sesión cerrada', authData })
+    })
+  })
 }
 
 module.exports = {
