@@ -12,14 +12,10 @@ const getProducts = async (req, res) => {
       return res.json(mostPopulars)
     }
 
-    const { section } = req.query
+    const query = req.query?.section === 'Todo' ? {} : req.query
+    const products = await Product.find(query).lean()
 
-    if (!section || section === 'Todo') {
-      const products = await Product.find({}).lean()
-      return res.json(products)
-    }
-
-    const products = await Product.find({ section }).lean()
+    if (products.length === 1 && req.query.barcode) return res.json(products[0])
     return res.json(products)
   } catch (error) {
     return res.status(400).json({ error: error.message })

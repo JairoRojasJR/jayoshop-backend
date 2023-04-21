@@ -244,8 +244,56 @@ const deleteProduct = async (req, res) => {
   }
 }
 
+const productSeller = async (req, res) => {
+  try {
+    const products = req.body
+    if (!Array.isArray(products)) throw new Error('Se esperaba un Array[]')
+    const billingProducts = []
+
+    for (const product of products) {
+      const { _id, cuantity } = product
+
+      if (cuantity === 0) {
+        throw new Error(
+          `Se ha recibo el producto con id ${_id} con 0 en cantidad a eliminar`
+        )
+      } else if (!_id) {
+        throw new Error(
+          'Falta el id ({"_id": "abc1234"}) del producto a eliminar'
+        )
+      } else if (!cuantity) {
+        throw new Error(
+          'Falta la cantidad ({"cuantity": 2}) del a eliminar del producto'
+        )
+      }
+
+      const dbProduct = await Product.findById(_id)
+      if (dbProduct.cuantity - cuantity < 0) {
+        throw new Error(
+          `No hay stock suficiente para vender ${cuantity} de ${dbProduct.cuantity} (${dbProduct.name}) disponibles`
+        )
+      }
+
+      billingProducts.push({ data: dbProduct, cuantity })
+    }
+
+    for (const product of billingProducts) {
+      const { data, cuantity } = product
+      const cuantityAfterSelling = data.cuantity - cuantity
+      await Product.findByIdAndUpdate(data._id, {
+        cuantity: cuantityAfterSelling
+      })
+    }
+
+    return res.json({ message: 'Venta finalizada con éxito' })
+  } catch (error) {
+    return res.json({ error: error.message })
+  }
+}
+
 module.exports = {
   addProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  productSeller
 }
