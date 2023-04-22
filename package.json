@@ -1,6 +1,6 @@
 {
   "name": "laveci-backend",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "main": "index.js",
   "description": "API laveci - tienda del barrio",
   "author": "Jairo Rojas",
@@ -28,6 +28,7 @@
     "test": "",
     "lint": "eslint . --fix",
     "prettier": "prettier . --write",
+    "clone-data-prod-to-dev": "node scripts/dev/backup-db.js",
     "azure-deploy": "az webapp deploy --resource-group Portafolio-Web --name dev-laveci-backend --src-path backend.zip --type zip --async true"
   },
   "devDependencies": {
