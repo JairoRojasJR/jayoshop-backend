@@ -3,13 +3,14 @@ const { nanoid } = require('nanoid')
 
 const getContainerClient = () => {
   const AZ_ST_AUTH = process.env.AZURE_STORAGE_CONNECTION_STRING
+  const containerName = process.env.AZURE_BLOB_CONTAINER
 
   if (!AZ_ST_AUTH) {
     throw Error('Azure Storage Connection string not found')
   }
 
   const blobServiceClient = BlobServiceClient.fromConnectionString(AZ_ST_AUTH)
-  return blobServiceClient.getContainerClient('imagenes')
+  return blobServiceClient.getContainerClient(`${containerName}/images`)
 }
 
 const createBlobName = (path, fullFileName) => {

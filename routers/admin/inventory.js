@@ -9,7 +9,8 @@ const {
 const {
   addProduct,
   deleteProduct,
-  updateProduct
+  updateProduct,
+  productSeller
 } = require('../../controllers/admin/products')
 
 router.post('/inventory/sections', isAuth, addSection)
@@ -19,5 +20,7 @@ router.put('/inventory/sections', isAuth, updateSection)
 router.post('/inventory/products', isAuth, addProduct)
 router.put('/inventory/products', isAuth, updateProduct)
 router.delete('/inventory/products', isAuth, deleteProduct)
+
+router.put('/inventory/seller', isAuth, productSeller)
 
 module.exports = router
