@@ -1,11 +1,12 @@
 {
-  "name": "laveci-backend",
-  "version": "2.2.0",
+  "name": "jayoshop-backend",
+  "version": "2.2.1",
   "main": "index.js",
-  "description": "API laveci - tienda del barrio",
+  "description": "API Jayoshop",
   "author": "Jairo Rojas",
   "license": "MIT",
   "private": true,
+  "packageManager": "pnpm@8.7.4",
   "dependencies": {
     "@azure/storage-blob": "12.13.0",
     "bcrypt": "5.1.0",
