@@ -1,13 +1,13 @@
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
+const dbName = process.env.DB_NAME
+const uri = `${process.env.DB_AUTH}/${dbName}?${globalThis.DB_OPTIONS}`
 
 const dbClient = mongoose
-  .connect(process.env.DB_AUTH)
+  .connect(uri)
   .then(m => {
-    const auth = process.env.DB_AUTH
-    const dbName = auth.split('.net/')[1].split('?')[0]
-    console.log(`🔥BBDD "${dbName}" conectada🔥`)
+    console.log(`🔥BBDD (${dbName}) conectada🔥`)
     return m.connection.getClient()
   })
   .catch(err =>

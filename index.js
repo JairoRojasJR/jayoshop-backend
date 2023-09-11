@@ -1,4 +1,10 @@
 require('dotenv').config()
+// GlobalsVariables
+globalThis.FRONTEND_URL = process.env.FRONTEND_URL
+globalThis.PROD_MODE_ENABLE = process.env.MODE === 'prod'
+globalThis.ADMIN_MODE_FORCED = process.env.FORCE_ADMIN_MODE === 'force'
+globalThis.DB_OPTIONS = 'retryWrites=true&w=majority'
+
 const express = require('express')
 const cors = require('cors')
 const MongoStore = require('connect-mongo')
@@ -7,21 +13,12 @@ const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const passport = require('passport')
 
-// GlobalsVariables
-globalThis.isProdMode = process.env.MODE === 'prod'
-globalThis.adminModeForced = process.env.FORCE_ADMIN_MODE === 'force'
-
-// Useful variables
-const frontendUrl = process.env.FRONTEND_URL
-const isProdMode = process.env.MODE === 'prod'
-const isPreProdMode = process.env.MODE === 'preprod'
-
 // Main configs
 const app = express()
 const PORT = process.env.PORT || 5000
 
 const corsOptions = {
-  origin: frontendUrl,
+  origin: globalThis.FRONTEND_URL,
   credentials: true,
   optionsSuccessStatus: 204
 }
@@ -35,14 +32,14 @@ const sessionOptions = {
     dbName: process.env.DB_NAME
   }),
   cookie: {
-    secure: isProdMode || isPreProdMode,
+    secure: globalThis.PROD_MODE_ENABLE,
     sameSite: 'lax',
     expires: new Date(Date.UTC(new Date().getUTCFullYear() + 100))
   }
 }
 app.use(cors(corsOptions))
 
-if (isProdMode || isPreProdMode) {
+if (globalThis.PROD_MODE_ENABLE) {
   app.set('trust proxy', true)
   sessionOptions.cookie.sameSite = 'none'
 }
@@ -83,8 +80,10 @@ passport.deserializeUser((user, done) => {
 
 // Validate frontend origin else redirect it to
 app.use((req, res, next) => {
+  const frontendUrl = globalThis.FRONTEND_URL
   const originNotRecognized = req.headers.referer !== `${frontendUrl}/`
-  if (isProdMode && originNotRecognized) return res.redirect(frontendUrl)
+  const isNotFronted = globalThis.PROD_MODE_ENABLE && originNotRecognized
+  if (isNotFronted) return res.redirect(frontendUrl)
   next()
 })
 
@@ -93,7 +92,7 @@ app.use('/api/stream', require('./routers/public/stream'))
 app.use('/api/auth', require('./routers/public/auth'))
 app.use('/api/inventory', require('./routers/public/inventory'))
 app.use('/api/admin', require('./routers/admin/inventory'))
-app.get('/', (req, res) => res.redirect(frontendUrl))
+app.get('/', (req, res) => res.redirect(globalThis.FRONTEND_URL))
 
 // 404 Not found
 app.use((req, res) => {
@@ -102,5 +101,6 @@ app.use((req, res) => {
 
 // Server listening
 app.listen(PORT, () => {
-  console.log(`Servidor escuchando en el puerto ${PORT} 🚀🚀🚀`)
+  const startupLog = `Servidor escuchando en el puerto ${PORT} 🚀🚀🚀  -> Go to http://localhost:${PORT}`
+  console.log(startupLog)
 })
