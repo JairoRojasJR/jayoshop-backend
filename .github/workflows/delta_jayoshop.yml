@@ -23,7 +23,7 @@ jobs:
 
       - name: pnpm install, build, and test
         run: |
-          npm install -g pnpm
+          npm install pnpm
           pnpm install
 
       - name: Zip artifact for deployment
@@ -43,6 +43,9 @@ jobs:
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
+      - name: Clear pnpm cache
+        run: pnpm cache clear --force
+
       - name: Download artifact from build job
         uses: actions/download-artifact@v2
         with:
