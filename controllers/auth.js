@@ -19,7 +19,7 @@ const login = async (req, res) => {
     const isAdminPass = password === process.env.ADMIN_PASS
     const user = getAuthData(req.ip)
 
-    if (isAdminUsername && isAdminPass && user.isIpAdmin) {
+    if (isAdminUsername && isAdminPass && user.isAdmin) {
       user.isAuthenticated = true
       user.isAdminAuthenticated = true
 

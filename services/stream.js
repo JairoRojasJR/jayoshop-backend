@@ -2,8 +2,8 @@ const { BlobServiceClient } = require('@azure/storage-blob')
 const { nanoid } = require('nanoid')
 
 const getContainerClient = () => {
-  const AZ_ST_AUTH = process.env.AZURE_STORAGE_CONNECTION_STRING
-  const containerName = process.env.AZURE_BLOB_CONTAINER
+  const AZ_ST_AUTH = process.env.AZ_STORAGE_CONNECTION_STRING
+  const containerName = process.env.AZ_BLOB_CONTAINER
 
   if (!AZ_ST_AUTH) {
     throw Error('Azure Storage Connection string not found')

@@ -30,7 +30,7 @@
     "lint": "eslint . --fix",
     "prettier": "prettier . --write",
     "clone-data-prod-to-dev": "node scripts/dev/backup-db.js",
-    "azure-deploy": "az webapp deploy --resource-group Portafolio-Web --name dev-laveci-backend --src-path backend.zip --type zip --async true"
+    "azure-deploy": "node scripts/dev/azure-deploy.js"
   },
   "devDependencies": {
     "eslint-config-prettier": "8.8.0",
