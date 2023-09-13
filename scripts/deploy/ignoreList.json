@@ -1,0 +1,14 @@
+[
+  ".git",
+  ".husky",
+  "dump",
+  "node_modules",
+  "scripts",
+  ".env",
+  ".env.example",
+  ".eslintrc.js",
+  ".gitignore",
+  ".prettierignore",
+  ".prettierrc",
+  "temp"
+]

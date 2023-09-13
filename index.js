@@ -4,6 +4,7 @@ globalThis.FRONTEND_URL = process.env.FRONTEND_URL
 globalThis.PROD_MODE_ENABLE = process.env.MODE === 'prod'
 globalThis.ADMIN_MODE_FORCED = process.env.FORCE_ADMIN_MODE === 'force'
 globalThis.DB_OPTIONS = 'retryWrites=true&w=majority'
+const frontendUrl = process.env.FRONTEND_URL
 
 const express = require('express')
 const cors = require('cors')
@@ -18,7 +19,7 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 const corsOptions = {
-  origin: globalThis.FRONTEND_URL,
+  origin: frontendUrl,
   credentials: true,
   optionsSuccessStatus: 204
 }
@@ -37,6 +38,7 @@ const sessionOptions = {
     expires: new Date(Date.UTC(new Date().getUTCFullYear() + 100))
   }
 }
+
 app.use(cors(corsOptions))
 
 if (globalThis.PROD_MODE_ENABLE) {
@@ -80,10 +82,10 @@ passport.deserializeUser((user, done) => {
 
 // Validate frontend origin else redirect it to
 app.use((req, res, next) => {
-  const frontendUrl = globalThis.FRONTEND_URL
-  const originNotRecognized = req.headers.referer !== `${frontendUrl}/`
-  const isNotFronted = globalThis.PROD_MODE_ENABLE && originNotRecognized
-  if (isNotFronted) return res.redirect(frontendUrl)
+  if (process.env.PROD_STATUS === 'public') {
+    const isNotFronted = req.headers.referer !== `${frontendUrl}/`
+    if (isNotFronted) return res.redirect(frontendUrl)
+  }
   next()
 })
 
@@ -92,7 +94,7 @@ app.use('/api/stream', require('./routers/public/stream'))
 app.use('/api/auth', require('./routers/public/auth'))
 app.use('/api/inventory', require('./routers/public/inventory'))
 app.use('/api/admin', require('./routers/admin/inventory'))
-app.get('/', (req, res) => res.redirect(globalThis.FRONTEND_URL))
+app.get('/', (req, res) => res.redirect(frontendUrl))
 
 // 404 Not found
 app.use((req, res) => {
