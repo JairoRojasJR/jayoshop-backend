@@ -30,7 +30,7 @@ module.exports = IP => {
     Object.assign(authData, devProperties)
   }
 
-  if (adminModeForced && isAdmin) Object.assign(authData, { adminModeForced })
+  if (adminModeForced) Object.assign(authData, { adminModeForced })
 
   return authData
 }
