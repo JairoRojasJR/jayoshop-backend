@@ -1,12 +1,11 @@
 {
   "name": "jayoshop-backend",
-  "version": "2.2.2",
+  "version": "2.2.3",
   "main": "index.js",
   "description": "API Jayoshop",
   "author": "Jairo Rojas",
   "license": "MIT",
   "private": true,
-  "packageManager": "pnpm@8.7.5",
   "dependencies": {
     "@azure/storage-blob": "12.13.0",
     "bcrypt": "5.1.0",
@@ -30,7 +29,8 @@
     "lint": "eslint . --fix",
     "prettier": "prettier . --write",
     "clone-data-prod-to-dev": "node scripts/db/backup",
-    "azure-deploy": "node scripts/deploy/run"
+    "azure-deploy": "node scripts/deploy/run",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "archiver": "6.0.1",
@@ -53,4 +53,3 @@
     "**/*.{js,css,html}": "prettier --write"
   }
 }
-
